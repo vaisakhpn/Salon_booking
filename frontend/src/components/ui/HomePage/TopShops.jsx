@@ -5,7 +5,7 @@ import { AppContext } from "../../../context/AppContext";
 
 const TopShops = () => {
   const navigate = useNavigate();
-  const { shops } = useContext(AppContext);
+  const { shops,currencySymbol } = useContext(AppContext);
 
   return (
     <div className="flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10 ">
@@ -20,14 +20,23 @@ const TopShops = () => {
             className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
             key={index}
           >
-            <img className="bg-blue-50  " src={item.image} alt="shop_image" />
+            <img
+              className="bg-blue-50 w-full h-40 object-cover rounded-t-xl"
+              src={item.image}
+              alt="shop_image"
+            />
+
             <div className="p-4">
               <div className="flex items-center gap-2 text-sm text-center text-green-500">
                 <p className="w-2 h-2 bg-green-500 rounded-full "></p>
                 <p className="text-sm">Opened</p>
               </div>
               <p className="text-gray-900 text-md font-medium">{item.name}</p>
-              <p className="text-gray-500 text-sm font-light">₹{item.fees}</p>
+              <p className="text-gray-500 text-sm font-light">{currencySymbol}{item.fees}</p>
+              <p className="text-gray-500 text-sm font-light">
+               
+                {item.address.line1}, {item.address.line2}
+              </p>
             </div>
           </div>
         ))}

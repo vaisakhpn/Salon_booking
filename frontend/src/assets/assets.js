@@ -11,8 +11,8 @@ export const shops = [
       "We offer a range of professional salon services including haircuts, styling, coloring, skincare, and grooming — all in a relaxing and friendly environment.",
     fees: 100,
     address: {
-      line1: "17th Cross, Richmond",
-      line2: "Circle, Ring Road, London",
+      line1: "Cheeral",
+      line2: "Sulthan Bathery",
     },
   },
   {
@@ -23,8 +23,8 @@ export const shops = [
       "We offer a range of professional salon services including haircuts, styling, coloring, skincare, and grooming — all in a relaxing and friendly environment.",
     fees: 110,
     address: {
-      line1: "17th Cross, Richmond",
-      line2: "Circle, Ring Road, London",
+      line1: "Cheeral",
+      line2: "Sulthan Bathery",
     },
   },
   {
@@ -35,8 +35,8 @@ export const shops = [
       "We offer a range of professional salon services including haircuts, styling, coloring, skincare, and grooming — all in a relaxing and friendly environment.",
     fees: 150,
     address: {
-      line1: "17th Cross, Richmond",
-      line2: "Circle, Ring Road, London",
+      line1: "Cheeral",
+      line2: "Sulthan Bathery",
     },
   },
   {
@@ -47,8 +47,8 @@ export const shops = [
       "We offer a range of professional salon services including haircuts, styling, coloring, skincare, and grooming — all in a relaxing and friendly environment.",
     fees: 150,
     address: {
-      line1: "17th Cross, Richmond",
-      line2: "Circle, Ring Road, London",
+      line1: "Cheeral",
+      line2: "Sulthan Bathery",
     },
   },
   {
@@ -59,8 +59,8 @@ export const shops = [
       "We offer a range of professional salon services including haircuts, styling, coloring, skincare, and grooming — all in a relaxing and friendly environment.",
     fees: 150,
     address: {
-      line1: "17th Cross, Richmond",
-      line2: "Circle, Ring Road, London",
+      line1: "Cheeral",
+      line2: "Sulthan Bathery",
     },
   },
   {
@@ -71,8 +71,8 @@ export const shops = [
       "We offer a range of professional salon services including haircuts, styling, coloring, skincare, and grooming — all in a relaxing and friendly environment.",
     fees: 150,
     address: {
-      line1: "17th Cross, Richmond",
-      line2: "Circle, Ring Road, London",
+      line1: "Cheeral",
+      line2: "Sulthan Bathery",
     },
   },
   {
@@ -83,8 +83,8 @@ export const shops = [
       "We offer a range of professional salon services including haircuts, styling, coloring, skincare, and grooming — all in a relaxing and friendly environment.",
     fees: 150,
     address: {
-      line1: "17th Cross, Richmond",
-      line2: "Circle, Ring Road, London",
+      line1: "Cheeral",
+      line2: "Sulthan Bathery",
     },
   },
 ];
