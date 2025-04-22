@@ -1,7 +1,7 @@
 import React from "react";
-import group from "../assets/group_profiles.png";
-import book_arrow from "../assets/arrow_icon.svg";
-import slider_img from "../assets/hero.png";
+import group from "../../../assets/group_profiles.png";
+import book_arrow from "../../../assets/arrow_icon.svg";
+import slider_img from "../../../assets/hero.png";
 
 const Header = () => {
   return (

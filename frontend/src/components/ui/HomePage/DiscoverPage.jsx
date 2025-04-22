@@ -2,7 +2,7 @@ import React from "react";
 
 const DiscoverPage = () => {
   return (
-    <div className="flex items-center justify-center mt-16 mb-10  ">
+    <div className="flex items-center justify-center mt-16 mb-10 my-16 mx-10  ">
       <div className="flex flex-col items-start justify-center  gap-16 w-full">
         <p className="text-black font-light text-5xl">
           Discover Top-Rated Salons Near you
