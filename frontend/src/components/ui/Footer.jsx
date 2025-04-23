@@ -45,12 +45,12 @@ const Footer = () => {
                 Contact us
               </p>
               <li>
-                <a
-                  href="#"
+                <button
+                  onClick={() => navigate("/contact")}
                   className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-black"
                 >
                   Help &amp; Support
-                </a>
+                </button>
               </li>
               <li>
                 <a
