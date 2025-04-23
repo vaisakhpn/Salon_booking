@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <footer className="relative mt-14  border border-l-0 border-r-0 border-gray-200 mx-10 flex justify-center bg-white text-black">
       <div className="w-full mt-4 px-8  ">
@@ -14,17 +16,17 @@ const Footer = () => {
                 Company
               </p>
               <li>
-                <a
-                  href="#"
-                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-gray-100"
+                <button
+                  onClick={() => navigate("/about")}
+                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-black"
                 >
                   About US
-                </a>
+                </button>
               </li>
               <li>
                 <a
                   href="#"
-                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-gray-100"
+                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-black"
                 >
                   Career
                 </a>
@@ -32,7 +34,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-gray-100"
+                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-black"
                 >
                   Team
                 </a>
@@ -45,7 +47,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-gray-100"
+                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-black"
                 >
                   Help &amp; Support
                 </a>
@@ -53,7 +55,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-gray-100"
+                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-black"
                 >
                   Partner with us
                 </a>
@@ -66,7 +68,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-gray-100"
+                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-black"
                 >
                   Terms &amp; Condition
                 </a>
@@ -74,7 +76,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-gray-100"
+                  className="block py-1.5 font-sans text-base font-normal leading-relaxed text-gray-700 antialiased transition-colors hover:text-black"
                 >
                   Privacy Policy
                 </a>
