@@ -5,7 +5,7 @@ import { AppContext } from "../../../context/AppContext";
 
 const TopShops = () => {
   const navigate = useNavigate();
-  const { shops,currencySymbol } = useContext(AppContext);
+  const { shops, currencySymbol } = useContext(AppContext);
 
   return (
     <div className="flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10 ">
@@ -13,11 +13,12 @@ const TopShops = () => {
       <p className="sm:w-1/3 text-center text-sm">
         Simply browse through our extensive list of salon shops.
       </p>
-      <div className="w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0">
+      <div className="w-full flex overflow-x-auto gap-4 pt-5 px-3 sm:px-0 sm:grid sm:grid-cols-auto sm:gap-y-6 sm:overflow-visible">
+
         {shops.slice(0, 10).map((item, index) => (
           <div
             onClick={() => navigate(`/booking/${item._id}`)}
-            className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
+            className="min-w-[200px] border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
             key={index}
           >
             <img
@@ -32,9 +33,11 @@ const TopShops = () => {
                 <p className="text-sm">Opened</p>
               </div>
               <p className="text-gray-900 text-md font-medium">{item.name}</p>
-              <p className="text-gray-500 text-sm font-light">{currencySymbol}{item.fees}</p>
               <p className="text-gray-500 text-sm font-light">
-               
+                {currencySymbol}
+                {item.fees}
+              </p>
+              <p className="text-gray-500 text-sm font-light">
                 {item.address.line1}, {item.address.line2}
               </p>
             </div>
