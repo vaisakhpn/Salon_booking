@@ -6,6 +6,7 @@ export const shops = [
   {
     _id: "shop1",
     name: "Beauty Salon",
+    phone: 7559092281,
     image: s1,
     about:
       "We offer a range of professional salon services including haircuts, styling, coloring, skincare, and grooming — all in a relaxing and friendly environment.",

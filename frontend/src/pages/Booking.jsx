@@ -100,6 +100,11 @@ const Booking = () => {
                 {shopInfo.address.line1}, {shopInfo.address.line2}
               </p>
             </div>
+            <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
+              <p>
+                {shopInfo.phone}
+              </p>
+            </div>
             <div>
               <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
                 About <img src={info_icon} alt="info_icon" />
