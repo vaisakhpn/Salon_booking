@@ -79,4 +79,14 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-export { addShop, loginAdmin };
+const allShops = async (req, res) => {
+  try {
+    const shops = await shopModel.find({}).select("-password");
+    res.json({ success: true, shops });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { addShop, loginAdmin, allShops };
