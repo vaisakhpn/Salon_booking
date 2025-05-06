@@ -17,4 +17,14 @@ const changeAvailablity = async (req, res) => {
   }
 };
 
-export { changeAvailablity };
+const shopList = async (req,res)=>{
+    try {
+        const shops = await shopModel.find({}).select(['-password','-email'])
+        res.json({success:true,shops})
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+export { changeAvailablity,shopList };
