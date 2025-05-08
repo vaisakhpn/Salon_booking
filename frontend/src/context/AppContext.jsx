@@ -10,12 +10,9 @@ const AppContextProvider = (props) => {
   const currencySymbol = "₹";
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [shops, setShops] = useState([]);
-  
-  const value = {
-    shops,
-    currencySymbol,
-  };
-  
+  const [token, setToken] = useState(
+    localStorage.getItem("token") ? localStorage.getItem("token") : false
+  );
 
   const getShopData = async () => {
     try {
@@ -29,6 +26,14 @@ const AppContextProvider = (props) => {
       console.log(error);
       toast.error(error.message);
     }
+  };
+
+  const value = {
+    shops,
+    currencySymbol,
+    token,
+    setToken,
+    backendUrl,
   };
 
   useEffect(() => {

@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import SearchBox from "../SearchBox";
 import profile_pic from "../../assets/profile_pic.png";
 import dropdown from "../../assets/dropdown_icon.svg";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const [token, setToken] = useState(true);
+  const { token, setToken } = useContext(AppContext);
+
+  const logout = () => {
+    setToken(false);
+    localStorage.removeItem("token");
+  };
 
   return (
     <div className="top-0 relative left-0 w-full bg-header p-1 z-50 border-b border-b-gray-400 mb-2 py-4">
@@ -43,7 +49,7 @@ const Navbar = () => {
                     My Bookings
                   </p>
                   <p
-                    onClick={() => setToken(false)}
+                    onClick={logout}
                     className="hover:text-black cursor-pointer"
                   >
                     Logout

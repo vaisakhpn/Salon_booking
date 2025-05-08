@@ -5,9 +5,9 @@ import jwt from "jsonwebtoken";
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone } = req.body;
 
-    if (!name || !password || !email) {
+    if (!name || !password || !email  || !phone) {
       return res.json({ success: false, message: "Missing Details" });
     }
 
@@ -24,6 +24,7 @@ const registerUser = async (req, res) => {
     const userData = {
       name,
       email,
+      phone,
       password: hashedPassword,
     };
 
@@ -45,7 +46,7 @@ const loginUser = async (req, res) => {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      res.json({ success: false, message: "User does not exist" });
+      return res.json({ success: false, message: "User does not exist" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -62,4 +63,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser,loginUser };
+export { registerUser, loginUser };
