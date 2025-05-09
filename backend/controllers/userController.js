@@ -2,6 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
 
 const registerUser = async (req, res) => {
   try {
@@ -76,4 +77,33 @@ const getProfile = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, getProfile };
+const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, phone } = req.body;
+    console.log(userId);
+    const imageFile = req.file;
+
+    if (!name || !phone) {
+      return res.json({ success: false, message: "Data Missing" });
+    }
+
+    await userModel.findByIdAndUpdate(userId, {
+      name,
+      phone,
+    });
+    if (imageFile) {
+      const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+        resource_type: "image",
+      });
+      const imageURL = imageUpload.secure_url;
+      await userModel.findByIdAndUpdate(userId, { image: imageURL });
+    }
+    res.json({ success: true, message: "Profile Updated" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { registerUser, loginUser, getProfile, updateProfile };
