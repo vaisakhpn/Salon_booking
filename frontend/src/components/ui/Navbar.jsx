@@ -8,7 +8,7 @@ import { AppContext } from "../../context/AppContext";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const { token, setToken } = useContext(AppContext);
+  const { token, setToken, userData } = useContext(AppContext);
 
   const logout = () => {
     setToken(false);
@@ -26,11 +26,11 @@ const Navbar = () => {
           <SearchBox label="Enter Shop name" />
         </div>
         <div>
-          {token ? (
+          {token && userData ? (
             <div className="flex items-center gap-2 cursor-pointer group relative">
               <img
-                className="w-8 rounded-full"
-                src={profile_pic}
+                className="w-8 rounded-full object-cover"
+                src={userData.image}
                 alt="profile"
               />
               <img className="w-2.5" src={dropdown} alt="dropdown" />

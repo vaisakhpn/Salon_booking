@@ -116,7 +116,7 @@ const MyProfile = () => {
             <button
               className="border border-blue-500 px-8 py-2 rounded-full  hover:bg-blue-500 hover:text-white transition-all duration-300 "
               onClick={updateUserProfileData}
-              hidden={loading}
+              disabled={loading}
             >
               {loading ? "Saving.." : "Save information"}
             </button>
