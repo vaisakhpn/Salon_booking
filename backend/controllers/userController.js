@@ -7,7 +7,7 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
 
-    if (!name || !password || !email  || !phone) {
+    if (!name || !password || !email || !phone) {
       return res.json({ success: false, message: "Missing Details" });
     }
 
@@ -63,4 +63,17 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser };
+const getProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userData = await userModel.findById(userId).select("-password");
+
+    res.json({ success: true, userData });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { registerUser, loginUser, getProfile };
