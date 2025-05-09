@@ -1,18 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import verified from "../assets/verified_icon.svg";
 import info_icon from "../assets/info_icon.svg";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Booking = () => {
   const { shopId } = useParams();
-  const { shops, currencySymbol } = useContext(AppContext);
+  const { shops, currencySymbol, backendUrl, token, getShopData } =
+    useContext(AppContext);
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
+  const navigate = useNavigate();
   const [shopInfo, setShopInfo] = useState(null);
   const [shopSlots, setShopSlots] = useState([]);
   const [slotIndex, setSlotindex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchShopInfo = async () => {
     const shopInfo = shops.find((shop) => shop._id === shopId);
@@ -54,16 +59,67 @@ const Booking = () => {
           minute: "2-digit",
         });
 
-        //add slot to array
-        timeSolts.push({
-          datetime: new Date(currentDate),
-          time: formattedTime,
-        });
+        let day = currentDate.getDate();
+        let month = currentDate.getMonth() + 1;
+        let year = currentDate.getFullYear();
+
+        const slotDate = day + "_" + month + "_" + year;
+
+        const slotTime = formattedTime;
+
+        const isSlotAvilable =
+          shopInfo.slots_booked[slotDate] &&
+          shopInfo.slots_booked[slotDate].includes(slotTime)
+            ? false
+            : true;
+
+        if (isSlotAvilable) {
+          timeSolts.push({
+            datetime: new Date(currentDate),
+            time: formattedTime,
+          });
+        }
+
         //increment current time by 30 minute
         currentDate.setMinutes(currentDate.getMinutes() + 30);
       }
 
       setShopSlots((prev) => [...prev, timeSolts]);
+    }
+  };
+
+  const bookingShop = async () => {
+    setLoading(false);
+    if (!token) {
+      toast.warn("Login to book salon");
+      return navigate("/login");
+    }
+    setLoading(true);
+    try {
+      const date = shopSlots[slotIndex][0].datetime;
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+
+      const slotDate = day + "_" + month + "_" + year;
+      const { data } = await axios.post(
+        backendUrl + "/api/user/book-shop",
+        { shopId, slotDate, slotTime },
+        { headers: { token } }
+      );
+      if (data.success) {
+        toast.success(data.message);
+        getShopData();
+        navigate("/my-bookings");
+        setLoading(false);
+      } else {
+        setLoading(false);
+        toast.error(data.message);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -101,9 +157,7 @@ const Booking = () => {
               </p>
             </div>
             <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
-              <p>
-                {shopInfo.phone}
-              </p>
+              <p>{shopInfo.phone}</p>
             </div>
             <div>
               <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
@@ -160,8 +214,12 @@ const Booking = () => {
                 </p>
               ))}
           </div>
-          <button className="bg-blue-500 text-white font-light text-sm px-14 py-3 rounded-full my-6">
-            Book the slot
+          <button
+            disabled={loading}
+            onClick={bookingShop}
+            className="bg-blue-500 text-white font-light text-sm px-14 py-3 rounded-full my-6"
+          >
+            {loading ? "Booking.." : "Book the slot"}
           </button>
         </div>
       </div>

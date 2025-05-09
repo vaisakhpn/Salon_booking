@@ -47,6 +47,7 @@ const AppContextProvider = (props) => {
 
   const value = {
     shops,
+    getShopData,
     currencySymbol,
     token,
     setToken,
