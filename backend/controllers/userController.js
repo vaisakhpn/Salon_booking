@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
+import shopModel from "../models/shopModel.js";
+import bookingModel from "../models/bookingModel.js";
 
 const registerUser = async (req, res) => {
   try {
@@ -81,7 +83,7 @@ const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
     const { name, phone } = req.body;
-    console.log(userId);
+
     const imageFile = req.file;
 
     if (!name || !phone) {
@@ -106,4 +108,55 @@ const updateProfile = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, getProfile, updateProfile };
+const bookingShop = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { shopId, slotDate, slotTime } = req.body;
+
+    const shopData = await shopModel.findById(shopId).select("-password");
+
+    if (!shopData.available) {
+      return res.json({ success: false, message: "Shop not available" });
+    }
+
+    let slots_booked = shopData.slots_booked;
+
+    if (slots_booked[slotDate]) {
+      if (slots_booked[slotDate].includes(slotTime)) {
+        return res.json({ success: false, message: "Slot not available" });
+      } else {
+        slots_booked[slotDate].push(slotTime);
+      }
+    } else {
+      slots_booked[slotDate] = [];
+      slots_booked[slotDate].push(slotTime);
+    }
+    const userData = await userModel.findById(userId).select("-password");
+
+    delete shopData.slots_booked;
+
+    const bookingData = {
+      userId,
+      shopId,
+      userData,
+      shopData,
+      amount: shopData.fees,
+      slotTime,
+      slotDate,
+      date: Date.now(),
+    };
+
+    const newBooking = new bookingModel(bookingData);
+
+    await newBooking.save();
+
+    await shopModel.findByIdAndUpdate(shopId, { slots_booked });
+
+    res.json({ success: true, message: "booking completed" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { registerUser, loginUser, getProfile, updateProfile, bookingShop };
