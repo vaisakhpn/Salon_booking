@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 const MyBookings = () => {
-  const { backendUrl, token,getShopData } = useContext(AppContext);
+  const { backendUrl, token, getShopData } = useContext(AppContext);
 
   const [bookings, setBookings] = useState([]);
 
@@ -59,7 +59,7 @@ const MyBookings = () => {
       if (data.success) {
         toast.success(data.message);
         getUserBooking();
-        getShopData()
+        getShopData();
       } else {
         toast.error(data.message);
       }
@@ -67,6 +67,10 @@ const MyBookings = () => {
       console.log(error);
       toast.error(error.message);
     }
+  };
+
+  const payOnline = async () => {
+    toast.error("Currently unavailable");
   };
 
   useEffect(() => {
@@ -111,7 +115,11 @@ const MyBookings = () => {
             <div></div>
             <div className="flex flex-col gap-2 justify-end">
               {!item.cancelled && (
-                <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-blue-500 hover:text-white transition-all duration-300">
+                <button
+                  onClick={payOnline}
+                  disabled
+                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-blue-500 hover:text-white transition-all duration-300  disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+                >
                   Pay Online
                 </button>
               )}
