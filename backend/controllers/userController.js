@@ -170,6 +170,37 @@ const listBooking = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+const cancelBooking = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { bookingId } = req.body;
+
+    const bookingData = await bookingModel.findById(bookingId);
+
+    if (bookingData.userId !== userId) {
+      return res.json({ success: false, message: "Unauthorized" });
+    }
+    await bookingModel.findByIdAndUpdate(bookingId, { cancelled: true });
+
+    const { shopId, slotDate, slotTime } = bookingData;
+
+    const shopData = await shopModel.findById(shopId);
+
+    let slots_booked = shopData.slots_booked;
+
+    slots_booked[slotDate] = slots_booked[slotDate].filter(
+      (e) => e !== slotTime
+    );
+    await shopModel.findByIdAndUpdate(shopId, { slots_booked });
+
+    res.json({ success: true, message: "Appointment cancelled" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   registerUser,
   loginUser,
@@ -177,4 +208,5 @@ export {
   updateProfile,
   bookingShop,
   listBooking,
+  cancelBooking,
 };

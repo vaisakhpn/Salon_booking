@@ -1,6 +1,7 @@
 import express from "express";
 import {
   bookingShop,
+  cancelBooking,
   getProfile,
   listBooking,
   loginUser,
@@ -24,5 +25,6 @@ userRouter.post(
 );
 userRouter.post("/book-shop", authUser, bookingShop);
 userRouter.get("/bookings", authUser, listBooking);
+userRouter.post("/cancel-booking", authUser, cancelBooking);
 
 export default userRouter;

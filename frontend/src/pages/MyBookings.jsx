@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 const MyBookings = () => {
-  const { backendUrl, token } = useContext(AppContext);
+  const { backendUrl, token,getShopData } = useContext(AppContext);
 
   const [bookings, setBookings] = useState([]);
 
@@ -48,6 +48,27 @@ const MyBookings = () => {
     }
   };
 
+  const cancelBooking = async (bookingId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/user/cancel-booking",
+        { bookingId },
+        { headers: { token } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        getUserBooking();
+        getShopData()
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       getUserBooking();
@@ -59,8 +80,9 @@ const MyBookings = () => {
       <p className="pb-3 mt-12 font-medium text-zinc-700 border-b">
         My Bookings
       </p>
+
       <div>
-        {bookings.slice(0, 2).map((item, index) => (
+        {bookings.slice(0, 5).map((item, index) => (
           <div
             className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b"
             key={index}
@@ -88,12 +110,24 @@ const MyBookings = () => {
             </div>
             <div></div>
             <div className="flex flex-col gap-2 justify-end">
-              <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-blue-500 hover:text-white transition-all duration-300">
-                Pay Online
-              </button>
-              <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-red-500 hover:text-white transition-all duration-300">
-                Cancel Booking
-              </button>
+              {!item.cancelled && (
+                <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-blue-500 hover:text-white transition-all duration-300">
+                  Pay Online
+                </button>
+              )}
+              {!item.cancelled && (
+                <button
+                  onClick={() => cancelBooking(item._id)}
+                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-red-500 hover:text-white transition-all duration-300"
+                >
+                  Cancel Booking
+                </button>
+              )}
+              {item.cancelled && (
+                <button className="sm:min-w-48 py-2 border border-red-500 rounded text-red-500">
+                  Booking Cancelled
+                </button>
+              )}
             </div>
           </div>
         ))}
