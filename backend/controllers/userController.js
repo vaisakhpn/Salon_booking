@@ -159,4 +159,22 @@ const bookingShop = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, getProfile, updateProfile, bookingShop };
+const listBooking = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const bookings = await bookingModel.find({ userId });
+
+    res.json({ success: true, bookings });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+export {
+  registerUser,
+  loginUser,
+  getProfile,
+  updateProfile,
+  bookingShop,
+  listBooking,
+};
