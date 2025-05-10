@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import shopModel from "../models/shopModel.js";
 import jwt from "jsonwebtoken";
+import bookingModel from "../models/bookingModel.js";
 
 //API FOR ADDING SHOP
 const addShop = async (req, res) => {
@@ -89,4 +90,39 @@ const allShops = async (req, res) => {
   }
 };
 
-export { addShop, loginAdmin, allShops };
+const bookingAdmin = async (req, res) => {
+  try {
+    const bookings = await bookingModel.find({});
+    res.json({ success: true, bookings });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+const bookingCancel = async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+
+    const bookingData = await bookingModel.findById(bookingId);
+
+    await bookingModel.findByIdAndUpdate(bookingId, { cancelled: true });
+
+    const { shopId, slotDate, slotTime } = bookingData;
+
+    const shopData = await shopModel.findById(shopId);
+
+    let slots_booked = shopData.slots_booked;
+
+    slots_booked[slotDate] = slots_booked[slotDate].filter(
+      (e) => e !== slotTime
+    );
+    await shopModel.findByIdAndUpdate(shopId, { slots_booked });
+
+    res.json({ success: true, message: "Appointment cancelled" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { addShop, loginAdmin, allShops, bookingAdmin,bookingCancel };

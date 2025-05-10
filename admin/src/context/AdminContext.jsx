@@ -11,6 +11,7 @@ const AdminContextProvider = (props) => {
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [shops, setShops] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
   const getAllShops = async () => {
     try {
@@ -39,9 +40,44 @@ const AdminContextProvider = (props) => {
       );
       if (data.success) {
         toast.success(data.message);
-        getAllShops()
-      }else{
-        toast.error(data.message)
+
+        getAllShops();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const getAllBookings = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/admin/bookings", {
+        headers: { aToken },
+      });
+
+      if (data.success) {
+        console.log(data.bookings);
+        setBookings(data.bookings);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  const cancelBooking = async (bookingId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/cancel-booking",
+        { bookingId },
+        { headers: { aToken } }
+      );
+      if (data.success) {
+        toast.success(data.message);
+        getAllBookings();
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -54,7 +90,11 @@ const AdminContextProvider = (props) => {
     backendUrl,
     shops,
     getAllShops,
-    changeAvailability
+    changeAvailability,
+    bookings,
+    setBookings,
+    getAllBookings,
+    cancelBooking
   };
 
   return (

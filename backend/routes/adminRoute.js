@@ -2,6 +2,8 @@ import express from "express";
 import {
   addShop,
   allShops,
+  bookingAdmin,
+  bookingCancel,
   loginAdmin,
 } from "../controllers/adminController.js";
 import upload from "../middlewares/multer.js";
@@ -12,7 +14,9 @@ const adminRouter = express.Router();
 
 adminRouter.post("/add-shop", authAdmin, upload.single("image"), addShop);
 adminRouter.post("/login", loginAdmin);
-adminRouter.post("/all-shops",authAdmin, allShops);
-adminRouter.post("/change-availability",authAdmin, changeAvailablity);
+adminRouter.post("/all-shops", authAdmin, allShops);
+adminRouter.post("/change-availability", authAdmin, changeAvailablity);
+adminRouter.get("/bookings", authAdmin, bookingAdmin);
+adminRouter.post("/cancel-booking", authAdmin, bookingCancel);
 
 export default adminRouter;
