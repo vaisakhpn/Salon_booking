@@ -12,6 +12,7 @@ const AdminContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [shops, setShops] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [dashData, setDashData] = useState(false);
 
   const getAllShops = async () => {
     try {
@@ -84,6 +85,22 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  const getDashData = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/admin/dashboard", {
+        headers: { aToken },
+      });
+
+      if (data.success) {
+        setDashData(data.dashData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const value = {
     aToken,
     setAToken,
@@ -94,7 +111,9 @@ const AdminContextProvider = (props) => {
     bookings,
     setBookings,
     getAllBookings,
-    cancelBooking
+    cancelBooking,
+    dashData,
+    getDashData,
   };
 
   return (

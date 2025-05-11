@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addShop,
+  adminDashboard,
   allShops,
   bookingAdmin,
   bookingCancel,
@@ -18,5 +19,6 @@ adminRouter.post("/all-shops", authAdmin, allShops);
 adminRouter.post("/change-availability", authAdmin, changeAvailablity);
 adminRouter.get("/bookings", authAdmin, bookingAdmin);
 adminRouter.post("/cancel-booking", authAdmin, bookingCancel);
+adminRouter.get("/dashboard", authAdmin, adminDashboard);
 
 export default adminRouter;

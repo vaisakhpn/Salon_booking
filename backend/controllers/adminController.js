@@ -4,6 +4,7 @@ import { v2 as cloudinary } from "cloudinary";
 import shopModel from "../models/shopModel.js";
 import jwt from "jsonwebtoken";
 import bookingModel from "../models/bookingModel.js";
+import userModel from "../models/userModel.js";
 
 //API FOR ADDING SHOP
 const addShop = async (req, res) => {
@@ -125,4 +126,26 @@ const bookingCancel = async (req, res) => {
   }
 };
 
-export { addShop, loginAdmin, allShops, bookingAdmin,bookingCancel };
+const adminDashboard = async (req, res) => {
+  try {
+    const shops = await shopModel.find({});
+
+    const users = await userModel.find({});
+
+    const bookings = await bookingModel.find({});
+
+    const dashData = {
+      shops: shops.length,
+      bookings: bookings.length,
+      customers: users.length,
+      latestBookings: bookings.reverse().slice(0, 5),
+    };
+
+    res.json({ success: true, dashData });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { addShop, loginAdmin, allShops, bookingAdmin, bookingCancel,adminDashboard };
