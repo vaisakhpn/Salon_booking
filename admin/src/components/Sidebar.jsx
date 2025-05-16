@@ -21,7 +21,7 @@ const Sidebar = () => {
             to={"/admin-dashboard"}
           >
             <img className="w-6" src={assets.home_icon} alt="home" />
-            <p>Dashboard</p>
+            <p className="hidden md:block">Dashboard</p>
           </NavLink>
           <NavLink
             className={({ isActive }) =>
@@ -32,7 +32,7 @@ const Sidebar = () => {
             to={"/all-bookings"}
           >
             <img className="w-6" src={assets.appointment_icon} alt="booking" />
-            <p>Bookings</p>
+            <p className="hidden md:block">Bookings</p>
           </NavLink>
           <NavLink
             className={({ isActive }) =>
@@ -43,7 +43,7 @@ const Sidebar = () => {
             to={"/add-shop"}
           >
             <img className="w-6" src={assets.add_icon} alt="Add" />
-            <p>Add Shop</p>
+            <p className="hidden md:block">Add Shop</p>
           </NavLink>
           <NavLink
             className={({ isActive }) =>
@@ -54,7 +54,7 @@ const Sidebar = () => {
             to={"/shop-list"}
           >
             <img className="w-6" src={assets.shop_icon} alt="people" />
-            <p>Shop list</p>
+            <p className="hidden md:block">Shop list</p>
           </NavLink>
         </ul>
       )}
@@ -69,7 +69,7 @@ const Sidebar = () => {
             to={"/shop-dashboard"}
           >
             <img className="w-6" src={assets.home_icon} alt="home" />
-            <p>Dashboard</p>
+            <p className="hidden md:block">Dashboard</p>
           </NavLink>
           <NavLink
             className={({ isActive }) =>
@@ -80,7 +80,7 @@ const Sidebar = () => {
             to={"/shop-bookings"}
           >
             <img className="w-6" src={assets.appointment_icon} alt="booking" />
-            <p>Bookings</p>
+            <p className="hidden md:block">Bookings</p>
           </NavLink>
 
           <NavLink
@@ -92,7 +92,7 @@ const Sidebar = () => {
             to={"/shop-profile"}
           >
             <img className="w-6" src={assets.shop_icon} alt="people" />
-            <p>Profile</p>
+            <p className="hidden md:block">Profile</p>
           </NavLink>
         </ul>
       )}
