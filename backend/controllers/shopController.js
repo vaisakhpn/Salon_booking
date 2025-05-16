@@ -139,6 +139,26 @@ const bookingCancel = async (req, res) => {
   }
 };
 
+const shopDashboard = async (req, res) => {
+  try {
+    const shopId = req.shop.id;
+
+    const bookings = await bookingModel.find({ shopId });
+
+    const uniqueCustomerIds = [...new Set(bookings.map((b) => b.userId))];
+    const dashData = {
+      bookings: bookings.length,
+      customers: uniqueCustomerIds.length,
+      latestBookings: bookings.reverse().slice(0, 5),
+    };
+
+    res.json({ success: true, dashData });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   changeAvailablity,
   bookingCancel,
@@ -146,4 +166,5 @@ export {
   loginShop,
   bookingsShop,
   bookingComplete,
+  shopDashboard,
 };

@@ -11,6 +11,7 @@ const ShopContextProvider = (props) => {
     localStorage.getItem("sToken") ? localStorage.getItem("sToken") : ""
   );
   const [bookings, setBookings] = useState([]);
+  const [dashData, setDashData] = useState(false);
 
   const getBookings = async () => {
     try {
@@ -64,6 +65,22 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  const getDashData = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/shop/dashboard", {
+        headers: { sToken },
+      });
+
+      if (data.success) {
+        setDashData(data.dashData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const value = {
     sToken,
     setSToken,
@@ -73,6 +90,9 @@ const ShopContextProvider = (props) => {
     getBookings,
     completeBooking,
     cancelBooking,
+    getDashData,
+    dashData,
+    setDashData,
   };
 
   return (

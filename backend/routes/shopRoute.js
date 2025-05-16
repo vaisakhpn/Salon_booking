@@ -1,9 +1,10 @@
 import express from "express";
 import {
-    bookingCancel,
-    bookingComplete,
+  bookingCancel,
+  bookingComplete,
   bookingsShop,
   loginShop,
+  shopDashboard,
   shopList,
 } from "../controllers/shopController.js";
 import authShop from "../middlewares/authShop.js";
@@ -15,5 +16,6 @@ shopRouter.post("/login", loginShop);
 shopRouter.get("/bookings", authShop, bookingsShop);
 shopRouter.post("/complete-booking", authShop, bookingComplete);
 shopRouter.post("/cancel-booking", authShop, bookingCancel);
+shopRouter.get("/dashboard", authShop, shopDashboard);
 
 export default shopRouter;
