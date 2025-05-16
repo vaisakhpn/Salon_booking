@@ -9,10 +9,14 @@ import Dashboard from "./pages/Admin/Dashboard";
 import AddShop from "./pages/Admin/AddShop";
 import ShopList from "./pages/Admin/ShopList";
 import Allbooking from "./pages/Admin/Allbooking";
+import { ShopContext } from "./context/ShopContext";
 
 const App = () => {
   const { aToken } = useContext(AdminContext);
-  return aToken ? (
+
+  const { sToken } = useContext(ShopContext);
+
+  return aToken || sToken ? (
     <div className="bg-[#F8F9FD]">
       <ToastContainer />
       <Navbar />

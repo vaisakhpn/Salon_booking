@@ -1,8 +1,9 @@
 import express from "express";
-import { shopList } from "../controllers/shopController.js";
+import { loginShop, shopList } from "../controllers/shopController.js";
 
 const shopRouter = express.Router();
 
 shopRouter.get("/list", shopList);
+shopRouter.post("/login", loginShop);
 
 export default shopRouter;

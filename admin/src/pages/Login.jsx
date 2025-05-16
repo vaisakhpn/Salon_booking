@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { AdminContext } from "../context/AdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { ShopContext } from "../context/ShopContext";
 
 const Login = () => {
   const [state, setState] = useState("Admin");
@@ -9,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const { setAToken, backendUrl } = useContext(AdminContext);
+  const { setSToken } = useContext(ShopContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -25,8 +27,22 @@ const Login = () => {
           toast.error(data.message);
         }
       } else {
+        const { data } = await axios.post(backendUrl + "/api/shop/login", {
+          email,
+          password,
+        });
+        if (data.success) {
+          localStorage.setItem("sToken", data.token);
+          setSToken(data.token);
+          console.log(data.token);
+        } else {
+          toast.error(data.message);
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   return (
