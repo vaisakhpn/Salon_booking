@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Login from "./pages/login";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { AdminContext } from "./context/AdminContext";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -10,6 +10,9 @@ import AddShop from "./pages/Admin/AddShop";
 import ShopList from "./pages/Admin/ShopList";
 import Allbooking from "./pages/Admin/Allbooking";
 import { ShopContext } from "./context/ShopContext";
+import ShopDashboard from "./pages/Shop/ShopDashboard";
+import ShopProfile from "./pages/Shop/ShopProfile";
+import ShopBooking from "./pages/Shop/ShopBooking";
 
 const App = () => {
   const { aToken } = useContext(AdminContext);
@@ -28,6 +31,10 @@ const App = () => {
           <Route path="/all-bookings" element={<Allbooking />} />
           <Route path="/add-shop" element={<AddShop />} />
           <Route path="/shop-list" element={<ShopList />} />
+          {/*Shop route*/}
+          <Route path="/shop-dashboard" element={<ShopDashboard />} />
+          <Route path="/shop-bookings" element={<ShopBooking />} />
+          <Route path="/shop-profile" element={<ShopProfile />} />
         </Routes>
       </div>
     </div>
