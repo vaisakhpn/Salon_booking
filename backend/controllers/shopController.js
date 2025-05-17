@@ -2,8 +2,6 @@ import shopModel from "../models/shopModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import bookingModel from "../models/bookingModel.js";
-import cron from "node-cron";
-import moment from "moment";
 
 const changeAvailablity = async (req, res) => {
   try {
@@ -75,20 +73,20 @@ const bookingsShop = async (req, res) => {
 };
 
 const bookingComplete = async (req, res) => {
-  // try {
-  //   const shopId = req.shop.id;
-  //   const { bookingId } = req.body;
-  //   const bookingData = await bookingModel.findById(bookingId);
-  //   if (bookingData && bookingData.shopId === shopId) {
-  //     await bookingModel.findByIdAndUpdate(bookingId, { isCompleted: true });
-  //     return res.json({ success: true, message: "Appointment Completed" });
-  //   } else {
-  //     return res.json({ success: false, message: "Mark Failed" });
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  //   res.json({ success: false, message: error.message });
-  // }
+  try {
+    const shopId = req.shop.id;
+    const { bookingId } = req.body;
+    const bookingData = await bookingModel.findById(bookingId);
+    if (bookingData && bookingData.shopId === shopId) {
+      await bookingModel.findByIdAndUpdate(bookingId, { isCompleted: true });
+      return res.json({ success: true, message: "Appointment Completed" });
+    } else {
+      return res.json({ success: false, message: "Mark Failed" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
 };
 const bookingCancel = async (req, res) => {
   try {

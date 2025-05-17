@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 import shopModel from "../models/shopModel.js";
 import bookingModel from "../models/bookingModel.js";
+import moment from "moment";
 
 const registerUser = async (req, res) => {
   try {
@@ -134,6 +135,8 @@ const bookingShop = async (req, res) => {
     const userData = await userModel.findById(userId).select("-password");
 
     delete shopData.slots_booked;
+    const formattedDate = slotDate.replace(/_/g, "-"); // Convert "11_5_2025" → "11-5-2025"
+const bookingTime = moment(`${formattedDate} ${slotTime}`, "D-M-YYYY hh:mm A").toDate();
 
     const bookingData = {
       userId,
@@ -143,6 +146,7 @@ const bookingShop = async (req, res) => {
       amount: shopData.fees,
       slotTime,
       slotDate,
+        bookingTime,
       date: Date.now(),
     };
 

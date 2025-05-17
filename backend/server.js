@@ -6,7 +6,7 @@ import connectColudinary from "./config/cloudinary.js";
 import adminRouter from "./routes/adminRoute.js";
 import shopRouter from "./routes/shopRoute.js";
 import userRouter from "./routes/userRoute.js";
-import "./controllers/autoComplete.js";
+import { startAutoCompletion } from "./controllers/autoComplete.js";
 
 // app config
 
@@ -15,6 +15,7 @@ const port = process.env.PORT || 4000;
 connectDB();
 connectColudinary();
 
+startAutoCompletion();
 // middlewares
 app.use(express.json());
 app.use(cors());

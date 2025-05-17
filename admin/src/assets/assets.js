@@ -11,9 +11,11 @@ import tick_icon from "./tick_icon.svg";
 import appointments_icon from "./appointments_icon.svg";
 import earning_icon from "./earning_icon.svg";
 import customers_icon from "./customers_icon.svg";
-import allShop from './allshop.svg'
+import allShop from "./allshop.svg";
+import salonably from "./salonably.png";
 
 export const assets = {
+  salonably,
   add_icon,
   admin_logo,
   appointment_icon,
@@ -27,5 +29,5 @@ export const assets = {
   tick_icon,
   appointments_icon,
   earning_icon,
-  allShop
+  allShop,
 };

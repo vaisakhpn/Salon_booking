@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import SearchBox from "../SearchBox";
 
 import dropdown from "../../assets/dropdown_icon.svg";
+import salonably from "../../assets/salonably.png";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 
@@ -16,10 +17,10 @@ const Navbar = () => {
   };
 
   return (
-    <div className="top-0 relative left-0 w-full bg-header p-1 z-50 border-b border-b-gray-400 mb-2 py-4">
+    <div className="top-0 relative left-0 w-full bg-header p-1 z-50 border-b border-b-gray-400 mb-2 ">
       <header className="flex flex-row justify-between items-center max-w-6xl mx-auto  p-4 ">
         <a className="text-black font-bold text-xl sm:text-3xl" href="/">
-          Logo
+          <img src={salonably} className="sm:w-20 w-12 rounded-full" alt="" />
         </a>
         <div className="flex items-center  text-sm">
           <SearchBox label="Glam up,Kochi.." />
@@ -28,7 +29,7 @@ const Navbar = () => {
           {token && userData ? (
             <div className="flex items-center gap-2 cursor-pointer group relative">
               <img
-                className="w-8 rounded-full object-cover"
+                className="sm:w-14 w-8 rounded-full object-cover"
                 src={userData.image}
                 alt="profile"
               />

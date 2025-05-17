@@ -137,7 +137,10 @@ const MyBookings = () => {
                 </button>
               )}
               {item.isCompleted && (
-                <button disabled className="text-green-500 sm:min-w-48 py-2 border border-green-500 rounded ">
+                <button
+                  disabled
+                  className="text-green-500 sm:min-w-48 py-2 border border-green-500 rounded "
+                >
                   Completed
                 </button>
               )}

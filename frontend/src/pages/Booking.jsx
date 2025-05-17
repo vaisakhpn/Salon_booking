@@ -34,7 +34,9 @@ const Booking = () => {
       //getting date with index
       let currentDate = new Date(today);
       currentDate.setDate(today.getDate() + i);
-
+      if (currentDate.getDay() === 2) {
+        continue;
+      }
       //setting end time of the date
       let endTime = new Date();
       endTime.setDate(today.getDate() + i);
