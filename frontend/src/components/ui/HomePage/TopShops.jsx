@@ -14,7 +14,6 @@ const TopShops = () => {
         Simply browse through our extensive list of salon shops.
       </p>
       <div className="w-full flex overflow-x-auto gap-4 pt-5 px-3 sm:px-0 sm:grid sm:grid-cols-auto sm:gap-y-6 sm:overflow-visible">
-
         {shops.slice(0, 10).map((item, index) => (
           <div
             onClick={() => navigate(`/booking/${item._id}`)}
@@ -28,9 +27,19 @@ const TopShops = () => {
             />
 
             <div className="p-4">
-              <div className="flex items-center gap-2 text-sm text-center text-green-500">
-                <p className="w-2 h-2 bg-green-500 rounded-full "></p>
-                <p className="text-sm">Opened</p>
+              <div
+                className={`flex items-center gap-2 ${
+                  item.available ? "text-green-500" : "text-red-500"
+                } text-sm text-center`}
+              >
+                <p
+                  className={`w-2 h-2 ${
+                    item.available ? "bg-green-500" : "bg-red-500"
+                  } rounded-full `}
+                ></p>
+                <p className="text-sm">
+                  {item.available ? "Opened" : "Not Opened"}
+                </p>
               </div>
               <p className="text-gray-900 text-md font-medium">{item.name}</p>
               <p className="text-gray-500 text-sm font-light">

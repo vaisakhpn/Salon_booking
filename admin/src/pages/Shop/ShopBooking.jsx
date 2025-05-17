@@ -4,7 +4,7 @@ import { AppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
 
 const ShopBooking = () => {
-  const { sToken, bookings, getBookings, cancelBooking, completeBooking } =
+  const { sToken, bookings, getBookings, cancelBooking,completeBooking } =
     useContext(ShopContext);
   const { slotDateFormat, currency } = useContext(AppContext);
 
@@ -67,12 +67,12 @@ const ShopBooking = () => {
                   src={assets.cancel_icon}
                   alt=""
                 />
-                <img
+                 <img
                   onClick={() => completeBooking(item._id)}
                   className="w-10 cursor-pointer"
                   src={assets.tick_icon}
                   alt=""
-                />
+                /> 
               </div>
             )}
           </div>
