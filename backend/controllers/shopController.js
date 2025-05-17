@@ -75,33 +75,20 @@ const bookingsShop = async (req, res) => {
 };
 
 const bookingComplete = async (req, res) => {
-  cron.schedule("* * * * *", async () => {
-    try {
-      const now = moment();
-
-      const bookings = await bookingModel.find({
-        isCompleted: false,
-        cancelled: false,
-      });
-
-      for (const booking of bookings) {
-        const bookingDateTime = moment(
-          `${booking.slotDate} ${booking.slotTime}`,
-          "YYYY-MM-DD HH:mm"
-        );
-
-        // If 30 minutes have passed since the scheduled booking time
-        if (now.diff(bookingDateTime, "minutes") >= 30) {
-          await bookingModel.findByIdAndUpdate(booking._id, {
-            isCompleted: true,
-          });
-          console.log("Booking completed");
-        }
-      }
-    } catch (error) {
-      console.error("Error auto-completing bookings:", error);
-    }
-  });
+  // try {
+  //   const shopId = req.shop.id;
+  //   const { bookingId } = req.body;
+  //   const bookingData = await bookingModel.findById(bookingId);
+  //   if (bookingData && bookingData.shopId === shopId) {
+  //     await bookingModel.findByIdAndUpdate(bookingId, { isCompleted: true });
+  //     return res.json({ success: true, message: "Appointment Completed" });
+  //   } else {
+  //     return res.json({ success: false, message: "Mark Failed" });
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  //   res.json({ success: false, message: error.message });
+  // }
 };
 const bookingCancel = async (req, res) => {
   try {
@@ -159,6 +146,31 @@ const shopDashboard = async (req, res) => {
   }
 };
 
+const shopProfile = async (req, res) => {
+  try {
+    const shopId = req.shop.id;
+    const profileData = await shopModel.findById(shopId).select("-password");
+
+    res.json({ success: true, profileData });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const updateShopProfile = async (req, res) => {
+  try {
+    const shopId = req.shop.id;
+    const { fees, address, available, phone } = req.body;
+    await shopModel.findByIdAndUpdate(shopId, { fees, address, available,phone });
+
+    res.json({ success: true, message: "Profile Updated" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   changeAvailablity,
   bookingCancel,
@@ -167,4 +179,6 @@ export {
   bookingsShop,
   bookingComplete,
   shopDashboard,
+  updateShopProfile,
+  shopProfile,
 };

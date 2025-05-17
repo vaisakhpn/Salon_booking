@@ -12,6 +12,7 @@ const ShopContextProvider = (props) => {
   );
   const [bookings, setBookings] = useState([]);
   const [dashData, setDashData] = useState(false);
+  const [profileData, setProfileData] = useState(false);
 
   const getBookings = async () => {
     try {
@@ -81,6 +82,20 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  const getProfileData = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/shop/profile", {
+        headers: { sToken },
+      });
+      if (data.success) {
+        setProfileData(data.profileData);
+        console.log(data.profileData);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const value = {
     sToken,
     setSToken,
@@ -93,6 +108,9 @@ const ShopContextProvider = (props) => {
     getDashData,
     dashData,
     setDashData,
+    setProfileData,
+    getProfileData,
+    profileData,
   };
 
   return (
