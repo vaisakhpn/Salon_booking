@@ -21,9 +21,8 @@ const Navbar = () => {
         <a className="text-black font-bold text-xl sm:text-3xl" href="/">
           Logo
         </a>
-        <div className="sm:flex sm:flex-row flex flex-col sm:gap-5 gap-2 text-xs sm:text-sm">
-          <SearchBox label="Kochi.." />
-          <SearchBox label="Enter Shop name" />
+        <div className="flex items-center  text-sm">
+          <SearchBox label="Glam up,Kochi.." />
         </div>
         <div>
           {token && userData ? (
