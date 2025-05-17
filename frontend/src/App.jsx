@@ -12,6 +12,7 @@ import Navbar from "./components/ui/Navbar";
 import Footer from "./components/ui/Footer";
 
 import { ToastContainer } from "react-toastify";
+import Search from "./pages/Search";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/booking/:shopId" element={<Booking />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
       <Footer />
     </div>

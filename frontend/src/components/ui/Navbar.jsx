@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import SearchBox from "../SearchBox";
-import profile_pic from "../../assets/profile_pic.png";
+
 import dropdown from "../../assets/dropdown_icon.svg";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";

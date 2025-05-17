@@ -162,9 +162,40 @@ const updateShopProfile = async (req, res) => {
   try {
     const shopId = req.shop.id;
     const { fees, address, available, phone } = req.body;
-    await shopModel.findByIdAndUpdate(shopId, { fees, address, available,phone });
+    await shopModel.findByIdAndUpdate(shopId, {
+      fees,
+      address,
+      available,
+      phone,
+    });
 
     res.json({ success: true, message: "Profile Updated" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+const getShops = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 9;
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const searchTerm = (req.query.searchTerm || "").trim();
+
+    const searchQuery = {
+      $or: [
+        { name: { $regex: searchTerm, $options: "i" } },
+        { "address.line1": { $regex: searchTerm, $options: "i" } },
+        { "address.line2": { $regex: searchTerm, $options: "i" } },
+      ],
+    };
+
+    const shops = await shopModel
+      .find(searchQuery)
+      .limit(limit)
+      .skip(startIndex);
+    const totalCount = await shopModel.countDocuments(searchQuery);
+
+    return res.json({ success: true, shops, totalCount });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -181,4 +212,5 @@ export {
   shopDashboard,
   updateShopProfile,
   shopProfile,
+  getShops,
 };
