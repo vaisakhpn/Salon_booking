@@ -5,7 +5,7 @@ import { AppContext } from "../../context/AppContext";
 import { ShopContext } from "../../context/ShopContext";
 
 const Dashboard = () => {
-  const { dashData, sToken, getDashData, cancelBooking,completeBooking } =
+  const { dashData, sToken, getDashData, cancelBooking,  } =
     useContext(ShopContext);
   const { slotDateFormat } = useContext(AppContext);
 
@@ -62,26 +62,28 @@ const Dashboard = () => {
                     {slotDateFormat(item.slotDate)}
                   </p>
                 </div>
-                 {item.cancelled ? (
-              <p className="text-red-400 text-xs font-medium">Cancelled</p>
-            ) : item.isCompleted ? (
-              <p className="text-green-500 text-xs font-medium">Completed</p>
-            ) : (
-              <div className="flex">
-                <img
-                  onClick={() => cancelBooking(item._id)}
-                  className="w-10 cursor-pointer"
-                  src={assets.cancel_icon}
-                  alt=""
-                />
-                <img
+                {item.cancelled ? (
+                  <p className="text-red-400 text-xs font-medium">Cancelled</p>
+                ) : item.isCompleted ? (
+                  <p className="text-green-500 text-xs font-medium">
+                    Completed
+                  </p>
+                ) : (
+                  <div className="flex">
+                    <img
+                      onClick={() => cancelBooking(item._id)}
+                      className="w-10 cursor-pointer"
+                      src={assets.cancel_icon}
+                      alt=""
+                    />
+                    {/* <img
                   onClick={() => completeBooking(item._id)}
                   className="w-10 cursor-pointer"
                   src={assets.tick_icon}
                   alt=""
-                />
-              </div>
-            )}
+                /> */}
+                  </div>
+                )}
               </div>
             ))}
           </div>
