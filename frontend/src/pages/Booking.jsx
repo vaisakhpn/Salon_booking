@@ -18,6 +18,7 @@ const Booking = () => {
   const [slotIndex, setSlotindex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
   const [loading, setLoading] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState(null);
 
   const fetchShopInfo = async () => {
     const shopInfo = shops.find((shop) => shop._id === shopId);
@@ -112,11 +113,17 @@ const Booking = () => {
       if (data.success) {
         toast.success(data.message);
         getShopData();
-        navigate("/my-bookings");
+
+        const bookedDate = shopSlots[slotIndex][0].datetime;
+        const date = `${bookedDate.getDate()}-${
+          bookedDate.getMonth() + 1
+        }-${bookedDate.getFullYear()}`;
+        setBookingDetails({
+          date,
+          time: slotTime,
+        });
+
         setLoading(false);
-      } else {
-        setLoading(false);
-        toast.error(data.message);
       }
     } catch (error) {
       setLoading(false);
@@ -224,6 +231,46 @@ const Booking = () => {
             {loading ? "Booking.." : "Book the slot"}
           </button>
         </div>
+        {bookingDetails && (
+          <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-center items-center">
+            <div className="bg-white rounded-lg p-6 w-[90%] max-w-md text-center relative">
+              <h2 className="text-xl font-semibold text-blue-600 mb-4">
+                Booking Confirmed!
+              </h2>
+              <img
+                className="w-28 mx-auto mb-4 rounded"
+                src={shopInfo.image}
+                alt="shop"
+              />
+              <p className="font-medium text-gray-800">{shopInfo.name}</p>
+              <p className="text-sm text-gray-600 mt-1">
+                {shopInfo.address.line1}, {shopInfo.address.line2}
+              </p>
+              <p className="text-sm text-gray-600 mt-1">
+                <strong>Date:</strong> {bookingDetails.date} |{" "}
+                <strong>Time:</strong> {bookingDetails.time}
+              </p>
+              <p className="text-sm text-gray-600 mt-1">
+                <strong>Charge:</strong> {currencySymbol}
+                {shopInfo.fees}
+              </p>
+              <div className="mt-6 flex justify-center gap-4">
+                <button
+                  onClick={() => navigate("/my-bookings")}
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                  Go to My Bookings
+                </button>
+                <button
+                  onClick={() => setBookingDetails(null)}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     )
   );
