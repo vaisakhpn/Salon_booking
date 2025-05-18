@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import Login from "./pages/login";
 import { ToastContainer } from "react-toastify";
 import { AdminContext } from "./context/AdminContext";
 import Navbar from "./components/Navbar";
@@ -13,6 +12,7 @@ import { ShopContext } from "./context/ShopContext";
 import ShopDashboard from "./pages/Shop/ShopDashboard";
 import ShopProfile from "./pages/Shop/ShopProfile";
 import ShopBooking from "./pages/Shop/ShopBooking";
+import LoginUser from "./pages/LoginUser";
 
 const App = () => {
   const { aToken } = useContext(AdminContext);
@@ -40,7 +40,7 @@ const App = () => {
     </div>
   ) : (
     <>
-      <Login />
+      <LoginUser />
       <ToastContainer />
     </>
   );

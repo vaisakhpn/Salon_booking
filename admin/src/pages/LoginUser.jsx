@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
 
-const Login = () => {
+const LoginUser = () => {
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -101,4 +101,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginUser;
