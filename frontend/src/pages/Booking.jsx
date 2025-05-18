@@ -282,6 +282,7 @@ const Booking = () => {
                   <strong>Booked by:</strong> {guestName} ({guestEmail})
                 </p>
               )}
+
               <div className="mt-6 flex justify-center gap-4">
                 <button
                   onClick={() => navigate("/my-bookings")}
