@@ -29,7 +29,7 @@ const Navbar = () => {
           {token && userData ? (
             <div className="flex items-center gap-2 cursor-pointer group relative">
               <img
-                className="sm:w-14 w-8 rounded-full object-cover"
+                className="sm:w-14 w-8 rounded-full object-cover sm:h-10 h-8"
                 src={userData.image}
                 alt="profile"
               />
@@ -60,7 +60,7 @@ const Navbar = () => {
           ) : (
             <button
               onClick={() => navigate("/login")}
-              className="bg-blue-500 p-1   sm:p-2  sm:px-5 rounded-full items-center hover:bg-blue-700 text-white text-xs  sm:text-lg"
+              className="bg-blue-500 p-1   sm:p-2 px-2 sm:px-5 rounded-full items-center hover:bg-blue-700 text-white text-xs  sm:text-lg"
             >
               Sign in
             </button>
