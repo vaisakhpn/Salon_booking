@@ -18,7 +18,7 @@ const Navbar = () => {
 
   return (
     <div className="top-0 relative left-0 w-full bg-header p-1 z-50 border-b border-b-gray-400 mb-2 ">
-      <header className="flex flex-row justify-between items-center max-w-6xl mx-auto  p-4 ">
+      <header className="flex flex-row gap-3  justify-between items-center max-w-6xl mx-auto  p-4 ">
         <a className="text-black font-bold text-xl sm:text-3xl" href="/">
           <img src={salonably} className="sm:w-20 w-12 rounded-full" alt="" />
         </a>
