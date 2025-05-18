@@ -6,8 +6,9 @@ const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="md:mx-10">
-      <div className="flex flex-col sm:grid sm:grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm">
+    <div className="md:mx-10 ">
+     
+      <div className="flex flex-col border-t-2 p-2  sm:grid sm:grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm">
         <div>
           <img className="mb-5 w-14" src={salonably} alt="LOGO" />
           <p className="w-full md:w-2/3 text-gray-600 leading-6">
