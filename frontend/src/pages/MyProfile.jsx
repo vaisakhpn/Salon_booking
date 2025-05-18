@@ -17,15 +17,15 @@ const MyProfile = () => {
     try {
       const formData = new FormData();
       formData.append("name", userData.name);
-      formData.append("phone", userData.phone);
 
       image && formData.append("image", image);
 
       const { data } = await axios.post(
         backendUrl + "/api/user/update-profile",
         formData,
-        { headers: { token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+
       if (data.success) {
         toast.success(data.message);
         await loadUserProfileData();
@@ -97,18 +97,6 @@ const MyProfile = () => {
             <p className="font-medium">Email id:</p>
             <p className="text-blue-500">{userData.email}</p>
             <p className="font-medium">Phone:</p>
-            {isEdit ? (
-              <input
-                className="bg-gray-100 max-w-52"
-                type="text"
-                value={userData.phone}
-                onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, phone: e.target.value }))
-                }
-              />
-            ) : (
-              <p className="text-blue-500">{userData.phone}</p>
-            )}
           </div>
         </div>
         <div className="mt-10">

@@ -3,6 +3,7 @@ import {
   bookingShop,
   cancelBooking,
   getProfile,
+  googleLogin,
   listBooking,
   loginUser,
   registerUser,
@@ -26,5 +27,6 @@ userRouter.post(
 userRouter.post("/book-shop", authUser, bookingShop);
 userRouter.get("/bookings", authUser, listBooking);
 userRouter.post("/cancel-booking", authUser, cancelBooking);
+userRouter.post("/google-login", googleLogin);
 
 export default userRouter;

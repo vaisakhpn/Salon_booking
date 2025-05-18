@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
 
@@ -10,10 +11,13 @@ const AppContextProvider = (props) => {
   const currencySymbol = "₹";
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [shops, setShops] = useState([]);
-  const [token, setToken] = useState(
-    localStorage.getItem("token") ? localStorage.getItem("token") : false
-  );
+  const [token, setToken] = useState(() => {
+    const stored = localStorage.getItem("token");
+    return stored && stored !== "false" ? stored : null;
+  });
+
   const [userData, setUserData] = useState(false);
+  const navigate = useNavigate();
 
   const getShopData = async () => {
     try {
@@ -32,7 +36,7 @@ const AppContextProvider = (props) => {
   const loadUserProfileData = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/user/get-profile", {
-        headers: { token },
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (data.success) {
         setUserData(data.userData);
@@ -40,8 +44,28 @@ const AppContextProvider = (props) => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.log(" Error loading profile:", error);
       toast.error(error.message);
+    }
+  };
+
+  const handleGoogleLogin = async (googleResponse) => {
+    try {
+      const response = await axios.post(`${backendUrl}/api/user/google-login`, {
+        token: googleResponse.credential,
+      });
+
+      if (response.data.success && response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        setToken(response.data.token);
+        toast.success("Login successful");
+        navigate("/");
+      } else {
+        toast.error("Login failed: No token");
+      }
+    } catch (err) {
+      console.error(" Google login failed:", err);
+      toast.error("Google login failed");
     }
   };
 
@@ -55,6 +79,7 @@ const AppContextProvider = (props) => {
     userData,
     setUserData,
     loadUserProfileData,
+    handleGoogleLogin,
   };
 
   useEffect(() => {
@@ -62,7 +87,7 @@ const AppContextProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    if (token) {
+    if (token && token !== "false") {
       loadUserProfileData();
     } else {
       setUserData(false);

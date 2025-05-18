@@ -6,12 +6,15 @@ import { v2 as cloudinary } from "cloudinary";
 import shopModel from "../models/shopModel.js";
 import bookingModel from "../models/bookingModel.js";
 import moment from "moment";
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, phone } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!name || !password || !email || !phone) {
+    if (!name || !password || !email) {
       return res.json({ success: false, message: "Missing Details" });
     }
 
@@ -28,7 +31,6 @@ const registerUser = async (req, res) => {
     const userData = {
       name,
       email,
-      phone,
       password: hashedPassword,
     };
 
@@ -83,17 +85,16 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { name, phone } = req.body;
+    const { name } = req.body;
 
     const imageFile = req.file;
 
-    if (!name || !phone) {
+    if (!name) {
       return res.json({ success: false, message: "Data Missing" });
     }
 
     await userModel.findByIdAndUpdate(userId, {
       name,
-      phone,
     });
     if (imageFile) {
       const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
@@ -136,7 +137,10 @@ const bookingShop = async (req, res) => {
 
     delete shopData.slots_booked;
     const formattedDate = slotDate.replace(/_/g, "-"); // Convert "11_5_2025" → "11-5-2025"
-const bookingTime = moment(`${formattedDate} ${slotTime}`, "D-M-YYYY hh:mm A").toDate();
+    const bookingTime = moment(
+      `${formattedDate} ${slotTime}`,
+      "D-M-YYYY hh:mm A"
+    ).toDate();
 
     const bookingData = {
       userId,
@@ -146,7 +150,7 @@ const bookingTime = moment(`${formattedDate} ${slotTime}`, "D-M-YYYY hh:mm A").t
       amount: shopData.fees,
       slotTime,
       slotDate,
-        bookingTime,
+      bookingTime,
       date: Date.now(),
     };
 
@@ -204,6 +208,44 @@ const cancelBooking = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+const googleLogin = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name, picture, sub: googleId } = payload;
+
+    // Check if user exists or create
+    let user = await userModel.findOne({ email });
+    if (!user) {
+      user = await userModel.create({
+        name,
+        email,
+        image: picture,
+        googleId,
+        // any default values you want
+      });
+    }
+
+    // Create your own JWT (server signed)
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.status(200).json({
+      success: true,
+      token: jwtToken,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Google login failed" });
+  }
+};
 
 export {
   registerUser,
@@ -213,4 +255,5 @@ export {
   bookingShop,
   listBooking,
   cancelBooking,
+  googleLogin,
 };

@@ -108,7 +108,7 @@ const Booking = () => {
       const { data } = await axios.post(
         backendUrl + "/api/user/book-shop",
         { shopId, slotDate, slotTime },
-        { headers: { token } }
+         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (data.success) {
         toast.success(data.message);

@@ -3,6 +3,7 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Oauth from "./Oauth";
 
 const Login = () => {
   const { backendUrl, token, setToken } = useContext(AppContext);
@@ -12,7 +13,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const onSubmitHandler = async (event) => {
@@ -25,7 +26,6 @@ const Login = () => {
           name,
           password,
           email,
-          phone,
         });
         if (data.success) {
           localStorage.setItem("token", data.token);
@@ -88,19 +88,6 @@ const Login = () => {
             required
           />
         </div>
-        {state === "Sign Up" && (
-          <div className="w-full">
-            <p>Phone No:</p>
-            <input
-              onWheel={(e) => e.target.blur()}
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
-              type="number"
-              onChange={(e) => setPhone(e.target.value)}
-              value={phone}
-              required
-            />
-          </div>
-        )}
 
         <div className="w-full">
           <p>Password</p>
@@ -125,6 +112,7 @@ const Login = () => {
             ? "Create Account"
             : "Login"}
         </button>
+        <Oauth />
         {state === "Sign Up" ? (
           <p>
             Already have an account?

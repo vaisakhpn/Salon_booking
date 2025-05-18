@@ -36,7 +36,7 @@ const MyBookings = () => {
   const getUserBooking = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/user/bookings", {
-        headers: { token },
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (data.success) {
         setBookings(data.bookings.reverse());
@@ -53,7 +53,7 @@ const MyBookings = () => {
       const { data } = await axios.post(
         backendUrl + "/api/user/cancel-booking",
         { bookingId },
-        { headers: { token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (data.success) {
