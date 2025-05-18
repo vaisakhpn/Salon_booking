@@ -19,6 +19,8 @@ const Booking = () => {
   const [slotTime, setSlotTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
+  const [guestName, setGuestName] = useState("");
+  const [guestEmail, setGuestEmail] = useState("");
 
   const fetchShopInfo = async () => {
     const shopInfo = shops.find((shop) => shop._id === shopId);
@@ -93,9 +95,9 @@ const Booking = () => {
 
   const bookingShop = async () => {
     setLoading(false);
-    if (!token) {
-      toast.warn("Login to book salon");
-      return navigate("/login");
+    if (!token && (!guestName || !guestEmail)) {
+      toast.error("Please enter your name and email");
+      return;
     }
     setLoading(true);
     try {
@@ -105,10 +107,11 @@ const Booking = () => {
       let year = date.getFullYear();
 
       const slotDate = day + "_" + month + "_" + year;
+      const endpoint = token ? "/api/user/book" : "/api/user/book-shop";
       const { data } = await axios.post(
-        backendUrl + "/api/user/book-shop",
-        { shopId, slotDate, slotTime },
-         { headers: { Authorization: `Bearer ${token}` } }
+        backendUrl + endpoint,
+        { shopId, slotDate, slotTime, name: guestName, email: guestEmail },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (data.success) {
         toast.success(data.message);
@@ -223,6 +226,25 @@ const Booking = () => {
                 </p>
               ))}
           </div>
+          {!token && (
+            <div className="mt-4">
+              <p className="font-medium text-gray-700 mb-2">Guest Details</p>
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="border px-4 py-2 rounded w-full mb-2"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value)}
+              />
+              <input
+                type="email"
+                placeholder="Your Email"
+                className="border px-4 py-2 rounded w-full"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+              />
+            </div>
+          )}
           <button
             disabled={loading}
             onClick={bookingShop}
@@ -231,6 +253,7 @@ const Booking = () => {
             {loading ? "Booking.." : "Book the slot"}
           </button>
         </div>
+
         {bookingDetails && (
           <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-center items-center">
             <div className="bg-white rounded-lg p-6 w-[90%] max-w-md text-center relative">
@@ -254,6 +277,11 @@ const Booking = () => {
                 <strong>Charge:</strong> {currencySymbol}
                 {shopInfo.fees}
               </p>
+              {!token && (
+                <p className="text-sm text-gray-600 mt-1">
+                  <strong>Booked by:</strong> {guestName} ({guestEmail})
+                </p>
+              )}
               <div className="mt-6 flex justify-center gap-4">
                 <button
                   onClick={() => navigate("/my-bookings")}

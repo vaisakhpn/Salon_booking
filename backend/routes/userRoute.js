@@ -24,7 +24,8 @@ userRouter.post(
   authUser,
   updateProfile
 );
-userRouter.post("/book-shop", authUser, bookingShop);
+userRouter.post("/book-shop", bookingShop);
+userRouter.post("/book", authUser, bookingShop);
 userRouter.get("/bookings", authUser, listBooking);
 userRouter.post("/cancel-booking", authUser, cancelBooking);
 userRouter.post("/google-login", googleLogin);

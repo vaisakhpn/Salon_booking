@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const bookingSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
+  userId: { type: String, required: false },
   shopId: { type: String, required: true },
   slotDate: { type: String, required: true },
   slotTime: { type: String, required: true },

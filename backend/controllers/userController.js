@@ -112,60 +112,70 @@ const updateProfile = async (req, res) => {
 
 const bookingShop = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { shopId, slotDate, slotTime } = req.body;
+    const userId = req.user?.id;
+    const { shopId, slotDate, slotTime, name, email } = req.body;
+
+    if (!shopId || !slotDate || !slotTime) {
+      return res.status(400).json({ success: false, message: "Missing booking data" });
+    }
+
+    if (!userId && (!name || !email)) {
+      return res.status(400).json({ success: false, message: "Guest name and email required" });
+    }
 
     const shopData = await shopModel.findById(shopId).select("-password");
-
-    if (!shopData.available) {
-      return res.json({ success: false, message: "Shop not available" });
+    if (!shopData?.available) {
+      return res.status(400).json({ success: false, message: "Shop not available" });
     }
 
-    let slots_booked = shopData.slots_booked;
+    let slots_booked = shopData.slots_booked || {};
+
+    if (slots_booked[slotDate]?.includes(slotTime)) {
+      return res.status(400).json({ success: false, message: "Slot not available" });
+    }
 
     if (slots_booked[slotDate]) {
-      if (slots_booked[slotDate].includes(slotTime)) {
-        return res.json({ success: false, message: "Slot not available" });
-      } else {
-        slots_booked[slotDate].push(slotTime);
-      }
-    } else {
-      slots_booked[slotDate] = [];
       slots_booked[slotDate].push(slotTime);
+    } else {
+      slots_booked[slotDate] = [slotTime];
     }
-    const userData = await userModel.findById(userId).select("-password");
 
-    delete shopData.slots_booked;
-    const formattedDate = slotDate.replace(/_/g, "-"); // Convert "11_5_2025" → "11-5-2025"
-    const bookingTime = moment(
-      `${formattedDate} ${slotTime}`,
-      "D-M-YYYY hh:mm A"
-    ).toDate();
+    const formattedDate = slotDate.replace(/_/g, "-");
+    const bookingTime = moment(`${formattedDate} ${slotTime}`, "D-M-YYYY hh:mm A").toDate();
 
     const bookingData = {
-      userId,
       shopId,
-      userData,
-      shopData,
-      amount: shopData.fees,
-      slotTime,
       slotDate,
+      slotTime,
+      shopData,
       bookingTime,
       date: Date.now(),
+      amount: shopData.fees,
     };
 
+    if (userId) {
+      bookingData.userId = userId;
+      const userData = await userModel.findById(userId).select("-password");
+      bookingData.userData = userData;
+    } else {
+      bookingData.userData = {
+        name: name.trim() || "Guest",
+        email: email.trim() || "N/A",
+      };
+    }
+
     const newBooking = new bookingModel(bookingData);
-
     await newBooking.save();
-
     await shopModel.findByIdAndUpdate(shopId, { slots_booked });
 
-    res.json({ success: true, message: "booking completed" });
+    res.json({ success: true, message: "Booking completed" });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
 
 const listBooking = async (req, res) => {
   try {
