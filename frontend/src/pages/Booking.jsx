@@ -43,9 +43,9 @@ const Booking = () => {
       //setting end time of the date
       let endTime = new Date();
       endTime.setDate(today.getDate() + i);
-      endTime.setHours(21, 0, 0, 0);
+      endTime.setHours(18, 0, 0, 0); // End at 6 PM
 
-      //setting hours
+      // Setting start time
       if (today.getDate() === currentDate.getDate()) {
         currentDate.setHours(
           currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10
@@ -67,9 +67,7 @@ const Booking = () => {
         let day = currentDate.getDate();
         let month = currentDate.getMonth() + 1;
         let year = currentDate.getFullYear();
-
         const slotDate = day + "_" + month + "_" + year;
-
         const slotTime = formattedTime;
 
         const isSlotAvilable =
@@ -78,15 +76,17 @@ const Booking = () => {
             ? false
             : true;
 
-        if (isSlotAvilable) {
+        const hour = currentDate.getHours();
+        const isLunchTime = hour === 12 || hour === 13;
+
+        if (isSlotAvilable && !isLunchTime) {
           timeSolts.push({
             datetime: new Date(currentDate),
             time: formattedTime,
           });
         }
 
-        //increment current time by 30 minute
-        currentDate.setMinutes(currentDate.getMinutes() + 30);
+        currentDate.setMinutes(currentDate.getMinutes() + 30); // next slot
       }
 
       setShopSlots((prev) => [...prev, timeSolts]);
