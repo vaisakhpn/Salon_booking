@@ -5,17 +5,20 @@ import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
 
 const LoginUser = () => {
-  const [state, setState] = useState("Admin");
+  const [state, setState] = useState("Shop");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { setAToken, backendUrl } = useContext(AdminContext);
   const { setSToken } = useContext(ShopContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    setLoading(false);
     try {
       if (state === "Admin") {
+        setLoading(true);
         const { data } = await axios.post(backendUrl + "/api/admin/login", {
           email,
           password,
@@ -23,10 +26,13 @@ const LoginUser = () => {
         if (data.success) {
           localStorage.setItem("aToken", data.token);
           setAToken(data.token);
+          setLoading(false);
         } else {
+          setLoading(false);
           toast.error(data.message);
         }
       } else {
+        setLoading(true);
         const { data } = await axios.post(backendUrl + "/api/shop/login", {
           email,
           password,
@@ -34,14 +40,16 @@ const LoginUser = () => {
         if (data.success) {
           localStorage.setItem("sToken", data.token);
           setSToken(data.token);
-          console.log(data.token);
+          setLoading(false);
         } else {
+          setLoading(false);
           toast.error(data.message);
         }
       }
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+      setLoading(false);
     }
   };
 
@@ -72,12 +80,15 @@ const LoginUser = () => {
             required
           />
         </div>
-        <button className="bg-blue-500 text-white w-full py-2 rounded-md text-base">
+        <button
+          disabled={loading}
+          className="bg-blue-500 text-white w-full py-2 rounded-md text-base"
+        >
           Login
         </button>
         {state === "Admin" ? (
           <p>
-            Shop Login?{" "}
+            Shop Login?
             <span
               className="text-blue-500 underline cursor-pointer"
               onClick={() => setState("Shop")}
@@ -87,7 +98,7 @@ const LoginUser = () => {
           </p>
         ) : (
           <p>
-            Admin Login?{" "}
+            Admin Login?
             <span
               className="text-blue-500 underline cursor-pointer"
               onClick={() => setState("Admin")}
