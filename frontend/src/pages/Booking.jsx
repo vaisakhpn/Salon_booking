@@ -257,6 +257,7 @@ const Booking = () => {
         {bookingDetails && (
           <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-center items-center">
             <div className="bg-white rounded-lg p-6 w-[90%] max-w-md text-center relative">
+              <p className="text-gray-700 text-sm m-auto">Take a ScreenShot</p>
               <h2 className="text-xl font-semibold text-blue-600 mb-4">
                 Booking Confirmed!
               </h2>
