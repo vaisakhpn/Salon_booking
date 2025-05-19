@@ -34,7 +34,13 @@ const Header = () => {
           </p>
         </div>
         <div className="mt-3 flex w-full items-center justify-center md:justify-start md:items-start">
-          <button className="flex items-center justify-center gap-2 bg-white px-8 py-3 rounded-full text-gray-600 text-sm m-auto md:m-0 hover:scale-105 transition-all duration-300">
+          <button
+            onClick={() => {
+              const section = document.getElementById("top-shops");
+              if (section) section.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="flex items-center justify-center gap-2 bg-white px-8 py-3 rounded-full text-gray-600 text-sm m-auto md:m-0 hover:scale-105 transition-all duration-300"
+          >
             Book Now <img className="w-3" src={book_arrow} alt="book" />
           </button>
         </div>
