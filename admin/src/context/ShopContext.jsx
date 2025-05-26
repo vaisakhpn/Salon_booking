@@ -6,7 +6,7 @@ export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
+  const [loadingShops, setLoadingShops] = useState(true);
   const [sToken, setSToken] = useState(
     localStorage.getItem("sToken") ? localStorage.getItem("sToken") : ""
   );
@@ -16,18 +16,23 @@ const ShopContextProvider = (props) => {
 
   const getBookings = async () => {
     try {
+      setLoadingShops(true);
       const { data } = await axios.get(backendUrl + "/api/shop/bookings", {
         headers: { sToken },
       });
       if (data.success) {
         setBookings(data.bookings);
-        console.log(data.bookings);
+        setLoadingShops(false);
       } else {
         toast.error(data.message);
+        setLoadingShops(false);
       }
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+      setLoadingShops(false);
+    } finally {
+      setLoadingShops(false);
     }
   };
   const completeBooking = async (bookingId) => {
@@ -68,17 +73,23 @@ const ShopContextProvider = (props) => {
 
   const getDashData = async () => {
     try {
+      setLoadingShops(true);
       const { data } = await axios.get(backendUrl + "/api/shop/dashboard", {
         headers: { sToken },
       });
 
       if (data.success) {
         setDashData(data.dashData);
+        setLoadingShops(false);
       } else {
         toast.error(data.message);
+        setLoadingShops(false);
       }
     } catch (error) {
       toast.error(error.message);
+      setLoadingShops(false);
+    } finally {
+      setLoadingShops(false);
     }
   };
 
@@ -107,6 +118,7 @@ const ShopContextProvider = (props) => {
     cancelBooking,
     getDashData,
     dashData,
+    loadingShops,
     setDashData,
     setProfileData,
     getProfileData,

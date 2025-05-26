@@ -17,10 +17,12 @@ const AppContextProvider = (props) => {
   });
 
   const [userData, setUserData] = useState(false);
+  const [loadingShops, setLoadingShops] = useState(true);
   const navigate = useNavigate();
 
   const getShopData = async () => {
     try {
+      setLoadingShops(true);
       const { data } = await axios.get(backendUrl + "/api/shop/list");
       if (data.success) {
         setShops(data.shops);
@@ -30,6 +32,8 @@ const AppContextProvider = (props) => {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setLoadingShops(false);
     }
   };
 
@@ -76,6 +80,7 @@ const AppContextProvider = (props) => {
     token,
     setToken,
     backendUrl,
+    loadingShops,
     userData,
     setUserData,
     loadUserProfileData,
