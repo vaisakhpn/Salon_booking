@@ -2,32 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://salonably.onrender.com/</loc>
+    <loc>https://salonably.shop/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Public pages -->
   <url>
-    <loc>https://salonably.onrender.com/shops</loc>
+    <loc>https://salonably.shop/shops</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://salonably.onrender.com/about</loc>
+    <loc>https://salonably.shop/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://salonably.onrender.com/contact</loc>
+    <loc>https://salonably.shop/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://salonably.onrender.com/search</loc>
+    <loc>https://salonably.shop/search</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
