@@ -116,22 +116,30 @@ const bookingShop = async (req, res) => {
     const { shopId, slotDate, slotTime, name, email } = req.body;
 
     if (!shopId || !slotDate || !slotTime) {
-      return res.status(400).json({ success: false, message: "Missing booking data" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing booking data" });
     }
 
     if (!userId && (!name || !email)) {
-      return res.status(400).json({ success: false, message: "Guest name and email required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Guest name and email required" });
     }
 
     const shopData = await shopModel.findById(shopId).select("-password");
     if (!shopData?.available) {
-      return res.status(400).json({ success: false, message: "Shop not available" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Shop not available in this time" });
     }
 
     let slots_booked = shopData.slots_booked || {};
 
     if (slots_booked[slotDate]?.includes(slotTime)) {
-      return res.status(400).json({ success: false, message: "Slot not available" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Slot not available" });
     }
 
     if (slots_booked[slotDate]) {
@@ -141,7 +149,10 @@ const bookingShop = async (req, res) => {
     }
 
     const formattedDate = slotDate.replace(/_/g, "-");
-    const bookingTime = moment(`${formattedDate} ${slotTime}`, "D-M-YYYY hh:mm A").toDate();
+    const bookingTime = moment(
+      `${formattedDate} ${slotTime}`,
+      "D-M-YYYY hh:mm A"
+    ).toDate();
 
     const bookingData = {
       shopId,
@@ -174,8 +185,6 @@ const bookingShop = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-
 
 const listBooking = async (req, res) => {
   try {

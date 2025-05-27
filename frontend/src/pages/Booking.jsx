@@ -127,11 +127,13 @@ const Booking = () => {
         });
 
         setLoading(false);
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       setLoading(false);
       console.log(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
